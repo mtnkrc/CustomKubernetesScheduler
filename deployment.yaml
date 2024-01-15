@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-processor-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: video-processor
+  template:
+    metadata:
+      labels:
+        app: video-processor
+    spec:
+      schedulerName: custom-scheduler 
+      containers:
+      - name: video-processor
+        image: metinkaracaa/video-processor:latest
+        volumeMounts:
+        - mountPath: "/mnt/converter"
+          name: my-volume
+      volumes:
+      - name: my-volume
+        persistentVolumeClaim:
+          claimName: my-pvc
